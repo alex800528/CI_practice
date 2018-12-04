@@ -61,7 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | 				$this->db->last_query() and profiling of DB queries.
 | 				When you run a query, with this setting set to TRUE (default),
 | 				CodeIgniter will store the SQL statement for debugging purposes.
-| 				However, this may cause high memory usage, especially if you run
+| 				However, this may cause high memory usage,€ especially if you run
 | 				a lot of SQL queries ... disable this to avoid that problem.
 |
 | The $active_group variable lets you choose which connection group to
@@ -73,20 +73,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $active_group = 'default';
 $query_builder = TRUE;
 
+switch ($_SERVER['HTTP_HOST']) {
+	#DBDELETESTART
+	case 'localhost':
+	case '127.0.0.1':
+		$dsn = 'mysql:host=127.0.0.1;port=3306;dbname=practice';
+		$username = "alex800528";
+		$password = "Jason789";
+// 40.83.74.206 
+		break;
+}
+
 $db['default'] = array(
-	'dsn'	=> '',
+	'dsn'	=> $dsn,
 	'hostname' => 'localhost',
-	'username' => '',
-	'password' => '',
+	'username' => $username,
+	'password' => $password,
 	'database' => '',
-	'dbdriver' => 'mysqli',
+	'dbdriver' => 'pdo',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,
 	'cachedir' => '',
-	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_general_ci',
+	'char_set' => 'utf8mb4',
+	'dbcollat' => 'utf8mb4_unicode_ci',
 	'swap_pre' => '',
 	'encrypt' => FALSE,
 	'compress' => FALSE,
