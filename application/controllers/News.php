@@ -18,7 +18,7 @@ class News extends CI_Controller {
     	//陣列$data中加入兩物件news及title，key為news，value為呼叫檔案news_model.php中的get_news()函式回傳結果
     	//由於get_news()內沒帶子物件、故進入11行的判斷式
         $data['news'] = $this->news_model->get_news();
-        $data['title'] = 'News archive';
+        $data['title'] = '新聞列表';
 
         //畫面呈現，分別載入header檔、index檔、footer檔
 	    $this->load->view('templates/header', $data);
@@ -30,19 +30,20 @@ class News extends CI_Controller {
     //其呼應routes.php第54、56、57行的路由
     //網址為http://localhost/CI_practice/index.php/news/view時
     //返回給使用者呈現的頁面，帶入建構子$slug陣列，作為詳細新聞頁面的呈現
-    public function view($slug = NULL)
+    public function view($id = NULL)
     {
     	//由於get_news()內有帶子物件、故跳過11行的判斷式
-        $data['news_item'] = $this->news_model->get_news($slug);
+        $data['news_item'] = $this->news_model->get_news($id);
         //檢查get_news()函式回傳回來是否為空值，如是、即導入CI提供的404錯誤頁面
 	    if (empty($data['news_item']))
 	    {
 	        show_404();
 	    }
+
 	    //由回傳回來陣列資料中的'title'設定網頁標頭
 	    $data['title'] = $data['news_item']['title'];
 
-	    //畫面呈現，分別載入header檔、view檔、footer檔
+	    // // //畫面呈現，分別載入header檔、view檔、footer檔
 	    $this->load->view('templates/header', $data);
 	    $this->load->view('news/view', $data);
 	    $this->load->view('templates/footer');
@@ -56,7 +57,7 @@ class News extends CI_Controller {
 	    //form_validation為CI提供的library的函式庫，目的為驗證form表單內容，詳見https://goo.gl/MUr4JA
 	    $this->load->library('form_validation');
 
-	    $data['title'] = 'Create a news item';
+	    $data['title'] = '建立新聞';
 
 	    $this->form_validation->set_rules('title', 'Title', 'required');
 	    $this->form_validation->set_rules('text', 'Text', 'required');
@@ -71,7 +72,28 @@ class News extends CI_Controller {
 	    else
 	    {
 	        $this->news_model->set_news();
-	        $this->load->view('news/success');
+	        $data['news'] = $this->news_model->get_news();
+	        $data['title'] = '新聞列表';
+
+		    $this->load->view('templates/header', $data);
+		    $this->load->view('news/index', $data);
+		    $this->load->view('templates/footer');
 	    }
 	}
+
+	public function clear() {
+
+		$this->load->helper('url');
+
+        $this->news_model->clear_news();
+
+        redirect('news');
+    }
+
+	public function test() {
+
+        $re_data = $this->news_model->get_news();
+
+        echo json_encode($re_data);
+    }
 }

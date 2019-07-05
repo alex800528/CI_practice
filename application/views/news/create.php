@@ -4,12 +4,16 @@
 
 <?php echo form_open('news/create'); ?>
 
-    <label for="title">Title</label>
-    <input type="input" name="title" /><br />
+    <div>
+	    <label for="title">標題</label><br />
+	    <input type="input" name="title" /><br />
+	</div>
 
-    <label for="text">Text</label>
-    <textarea name="text"></textarea><br />
+    <div>
+	    <label for="text">內容</label><br />
+	    <textarea name="text"></textarea><br />
+	</div>
 
-    <input type="submit" name="submit" value="Create news item" />
+    <input type="submit" name="submit" value="建立新聞" />
 
 </form>
